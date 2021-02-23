@@ -22,9 +22,16 @@ class Start:
                                           justify=LEFT, padx=10, pady=10)
         self.mystery_instructions.grid(row=1)
 
-        # Entry box... (row 2)
-        self.start_amount_entry = Entry(self.start_frame, font="Arial 16 bold")
-        self.start_amount_entry.grid(row=2)
+        # Entry box and error frame (row 2)
+        self.entry_error_frame = Frame(self.start_frame, width=200)
+        self.entry_error_frame.grid(row=2)
+
+        self.start_amount_entry = Entry(self.entry_error_frame, font="Arial 16 bold")
+        self.start_amount_entry.grid(row=0)
+
+        self.amount_error_label = Label(self.entry_error_frame, fg="maroon", text="", font="Arial 10 bold",
+                                        wrap=275, justify=LEFT)
+        self.amount_error_label.grid(row=1, columnspan=2, pady=5)
 
         # Button frame (row 3)
         self.stakes_frame = Frame(self.start_frame)
@@ -33,20 +40,20 @@ class Start:
         # Buttons go here..
         button_font = "Arial 12 bold"
         # Orange low stakes button...
-        self.lowstakes_button = Button(self.stakes_frame, text="Low ($5)", command=lambda: self.to_game(1),
+        self.low_stakes_button = Button(self.stakes_frame, text="Low ($5)", command=lambda: self.to_game(1),
                                        font=button_font, bg="#FF9933")
-        self.lowstakes_button.grid(row=0, column=0, pady=10)
+        self.low_stakes_button.grid(row=0, column=0, pady=10)
 
         # Yellow medium stakes button...
-        self.lowstakes_button = Button(self.stakes_frame, text="Medium ($10)",
+        self.medium_stakes_button = Button(self.stakes_frame, text="Medium ($10)",
                                        command=lambda: self.to_game(2),
                                        font=button_font, bg="#FFFF33")
-        self.lowstakes_button.grid(row=0, column=1, padx=5, pady=10)
+        self.medium_stakes_button.grid(row=0, column=1, padx=5, pady=10)
 
         # Green high stakes button...
-        self.lowstakes_button = Button(self.stakes_frame, text="High ($15)", command=lambda: self.to_game(3),
+        self.high_stakes_button = Button(self.stakes_frame, text="High ($15)", command=lambda: self.to_game(3),
                                        font=button_font, bg="#99FF33")
-        self.lowstakes_button.grid(row=0, column=2, pady=10)
+        self.high_stakes_button.grid(row=0, column=2, pady=10)
 
         # Help Button
         self.help_button = Button(self.start_frame, text="How to Play", bg="#808080", fg="white",
@@ -55,7 +62,45 @@ class Start:
 
     def to_game(self, stakes):
         starting_balance = self.start_amount_entry.get()
-        Game(self, stakes, starting_balance)
+
+        # Set error background and colours (and assume no errors at the start
+        error_back = "#ffafaf"
+        has_errors = "no"
+
+        # Change background to white (fr testing purposes)
+        self.start_amount_entry.config(bg="white")
+        self.amount_error_label.config(text="")
+
+        try:
+            starting_balance = int(starting_balance)
+
+            if starting_balance < 5:
+                has_errors = "yes"
+                error_feedback = "Sorry, the least you can play with is $5"
+            elif starting_balance > 50:
+                has_errors = "yes"
+                error_feedback = "Too high! The most you can risk in this game is $50"
+            elif starting_balance < 10 and (stakes == 2 or stakes ==3):
+                has_errors = "yes"
+                error_feedback = "Sorry, you can only afford to play a low stakes game"
+
+            elif starting_balance < 15 and stakes == 3:
+                has_errors = "yes"
+                error_feedback = "Sorry, you can only afford to play a low or medium stakes game."
+
+        except ValueError:
+            has_errors = "yes"
+            error_feedback = "Please enter a dollar amoutnt (not text or decimals)"
+
+        if has_errors == "yes":
+            self.start_amount_entry.config(bg=error_back)
+            self.amount_error_label.config(text=error_feedback)
+
+        else:
+            Game(self, stakes, starting_balance)
+
+            # hide start up window
+            # root.withdraw
 
 
 class Game:
