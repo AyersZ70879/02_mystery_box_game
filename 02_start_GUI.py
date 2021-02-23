@@ -135,7 +135,7 @@ class Start:
         Game(self, stakes, starting_balance)
 
         # hide start up window
-        root.withdraw
+        root.withdraw()
 
 
 class Game:
