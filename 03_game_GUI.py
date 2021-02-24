@@ -42,16 +42,16 @@ class Game:
 
         # GUI Setup
         self.game_box = Toplevel()
-        self.game_frame = Frame(self.game_box)
+        self.game_frame = Frame(self.game_box, bg="#DDF0FF")
         self.game_frame.grid()
 
         # Heading Row
         self.heading_label = Label(self.game_frame, text="Play...", font="Arial 24 bold",
-                                   padx=10, pady=10)
+                                   padx=10, pady=10, bg="#DDF0FF")
         self.heading_label.grid(row=0)
 
         # Instructions Label
-        self.instructions_label = Label(self.game_frame, wrap=300, justify=LEFT, text="Press 'Open "
+        self.instructions_label = Label(self.game_frame, wrap=300, justify=LEFT, bg="#DDF0FF", text="Press 'Open "
                                                                                       "Boxes' button to reveal the"
                                                                                       " contents of the mystery boxes.")
         self.instructions_label.grid(row=1)
@@ -60,7 +60,7 @@ class Game:
         box_text = "Arial 16 bold"
         box_back = "#b9ea96"    # light green
         box_width = 5
-        self.box_frame = Frame(self.game_frame)
+        self.box_frame = Frame(self.game_frame, bg="#DDF0FF")
         self.box_frame.grid(row=2, pady=10)
 
         self.prize1_label = Label(self.box_frame, text="?\n", font=box_text, bg=box_back, width=box_width,
@@ -85,7 +85,7 @@ class Game:
         start_text = "Game Cost: ${} \n"" \nHow much will you win".format(stakes*5)
 
         self.balance_label = Label(self.game_frame, font="Arial 12 bold", fg="green",
-                                   text=start_text, wrap=300, justify=LEFT)
+                                   text=start_text, wrap=300, justify=LEFT, bg="#DDF0FF")
         self.balance_label.grid(row=4, pady=10)
 
         # Help and Game stats button (row 5)
