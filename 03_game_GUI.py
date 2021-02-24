@@ -76,7 +76,7 @@ class Game:
         self.prize3_label.grid(row=0, column=2)
 
         # Play button goes here (row 3)
-        self.play_button = Button(self.game_frame, text="Open Boxes", bg="#FFFF33", font="Arial 15 bold",
+        self.play_button = Button(self.game_frame, text="Open Boxes", bg="#FDEA9B", font="Arial 15 bold",
                                   width=20, padx=10, pady=10, command=self.reveal_boxes)
         self.play_button.grid(row=3)
 
