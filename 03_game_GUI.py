@@ -10,8 +10,8 @@ class Start:
         self.start_frame = Frame(padx=10, pady=10)
         self.start_frame.grid()
 
-        # Play Button (row 2)
-        self.push_me_button = Button(text="Push Me", command=lambda: self.to_game)
+        # Play Button
+        self.push_me_button = Button(text="Push Me", command=self.to_game)
         self.push_me_button.grid(row=0, pady=10)
 
     def to_game(self):
@@ -51,8 +51,7 @@ class Game:
         self.heading_label.grid(row=0)
 
         # Instructions Label
-        self.instructions_label = Label(self.game_frame, wrap=300, justify=LEFT, text="Press <enter> "
-                                                                                      "to click the 'Open "
+        self.instructions_label = Label(self.game_frame, wrap=300, justify=LEFT, text="Press 'Open "
                                                                                       "Boxes' button to reveal the"
                                                                                       " contents of the mystery boxes.")
         self.instructions_label.grid(row=1)
