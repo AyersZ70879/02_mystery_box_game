@@ -22,7 +22,7 @@ class Start:
         Game(self, stakes, starting_balance)
 
         # hide start up window
-        root.withdraw()
+        self.start_frame.destroy()
 
 
 class Game:
@@ -45,6 +45,12 @@ class Game:
         self.game_frame = Frame(self.game_box, bg="#DDF0FF")
         self.game_frame.grid()
 
+        # If user press cross at top, game quits
+        self.game_box.protocol('WM_DELETE_WINDOW', self.to_quit)
+
+        self.game_frame = Frame(self.game_box)
+        self.game_frame.grid()
+
         # Heading Row
         self.heading_label = Label(self.game_frame, text="Play...", font="Arial 24 bold",
                                    padx=10, pady=10, bg="#DDF0FF")
@@ -52,7 +58,8 @@ class Game:
 
         # Instructions Label
         self.instructions_label = Label(self.game_frame, wrap=300, justify=LEFT, bg="#DDF0FF", text="Press 'Open "
-                                                                                      "Boxes' button to reveal the"
+                                                                                      "Boxes' button or press <enter> "
+                                                                                                    "to reveal the"
                                                                                       " contents of the mystery boxes.")
         self.instructions_label.grid(row=1)
 
@@ -78,6 +85,10 @@ class Game:
         # Play button goes here (row 3)
         self.play_button = Button(self.game_frame, text="Open Boxes", bg="#FDEA9B", font="Arial 15 bold",
                                   width=20, padx=10, pady=10, command=self.reveal_boxes)
+
+        # bind button to <enter> (users can push to reveal the boxes)
+        self.play_button.focus()
+        self.play_button.bind('<Return>', lambda e: self.reveal_boxes())
         self.play_button.grid(row=3)
 
         # Balance label (row 4)
@@ -100,6 +111,11 @@ class Game:
                                    bg="#003366", fg="white")
         self.stats_button.grid(row=0, column=1, padx=2)
 
+        # Quit Button
+        self.quit_button = Button(self.game_frame, text="Quit", fg="white", bg="#660000", font="Arial 15 bold",
+                                  width=20, command=self.to_quit, padx=10, pady=10)
+        self.quit_button.grid(row=6, pady=10)
+
     def reveal_boxes(self):
         # retrieve of the balance from the initial function..
         current_balance = self.balance.get()
@@ -107,28 +123,34 @@ class Game:
 
         round_winnings = 0
         prizes = []
+        backgrounds = []
 
         for item in range (0, 3):
             prize_num = random.randint(1, 100)
 
             if 0 < prize_num <= 5:
                 prize = "gold\n(${})".format(5 * stakes_multiplier)
+                back_colour = "#FFBA08"
                 round_winnings += 5 * stakes_multiplier
             elif 5 < prize_num <=25:
                 prize = "silver\n(${})".format(2 * stakes_multiplier)
+                back_colour = "#A9ABB1"
                 round_winnings += 2 * stakes_multiplier
             elif 25 < prize_num <= 65:
                 prize = "copper\n(${})".format(1 * stakes_multiplier)
+                back_colour = "#FF9933"
                 round_winnings += stakes_multiplier
             else:
                 prize = "lead\n($0)"
+                back_colour = "#8A7D42"
 
             prizes.append(prize)
+            backgrounds.append(back_colour)
 
         # Display prizes
-        self.prize1_label.config(text=prizes[0])
-        self.prize2_label.config(text=prizes[1])
-        self.prize3_label.config(text=prizes[2])
+        self.prize1_label.config(text=prizes[0], bg=backgrounds[0])
+        self.prize2_label.config(text=prizes[1], bg=backgrounds[1])
+        self.prize3_label.config(text=prizes[2], bg=backgrounds[2])
 
         # Deduct cost of game
         current_balance -= 5 * stakes_multiplier
@@ -145,6 +167,19 @@ class Game:
 
         # Edit label so user can see their balance
         self.balance_label.configure(text=balance_statement)
+
+        if current_balance < 5 * stakes_multiplier:
+            self.play_button.config(state=DISABLED)
+            self.game_box.focus()
+            self.play_button.config(text="Game Over")
+
+            balance_statement = "Current Balance: ${}\nYour balance is too low. You can only " \
+                                "quit or view your stats. Sorry about that.".format(current_balance)
+            self.balance_label.config(fg="#660000", font="Arial 10 bold", text=balance_statement)
+
+    def to_quit(self):
+        root.destroy()
+
 
 # main routine
 if __name__ == "__main__":
