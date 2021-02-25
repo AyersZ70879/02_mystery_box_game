@@ -100,7 +100,7 @@ class Game:
         self.balance_label.grid(row=4, pady=10)
 
         # Help and Game stats button (row 5)
-        self.help_export_frame = Frame(self.game_frame)
+        self.help_export_frame = Frame(self.game_frame, bg="#DDF0FF")
         self.help_export_frame.grid(row=5, pady=10)
 
         self.help_button = Button(self.help_export_frame, text="Help / Rules", font="Arial 15 bold",
