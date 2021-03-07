@@ -3,6 +3,7 @@ from functools import partial   # To prevent unwanted windows
 import random
 
 
+# Start Section
 class Start:
     def __init__(self, parent):
 
@@ -133,6 +134,7 @@ class Start:
         root.withdraw()
 
 
+# Game Section
 class Game:
     def __init__(self, partner, stakes, starting_balance):
         print(stakes)
@@ -150,7 +152,7 @@ class Game:
 
         # List for holding stats
         self.round_stats_list = []
-        self.game_stats_list=[starting_balance, starting_balance]
+        self.game_stats_list = [starting_balance, starting_balance]
 
         # GUI Setup
         self.game_box = Toplevel()
@@ -223,7 +225,8 @@ class Game:
         self.help_button.grid(row=0, column=0, padx=2)
 
         self.stats_button = Button(self.help_export_frame, text="Game Stats", font="Arial 15 bold",
-                                   bg="#003366", fg="white", command=self.to_stats)
+                                   bg="#003366", fg="white", command=lambda: self.to_stats(self.round_stats_list,
+                                                                                   self.game_stats_list))
         self.stats_button.grid(row=0, column=1, padx=2)
 
         # Quit Button
@@ -292,6 +295,8 @@ class Game:
 
         # Set balance to new balance
         self.balance.set(current_balance)
+
+        # update game_stats_list with current balance (replace item in position 1 with current balance)
         self.game_stats_list[1] = current_balance
 
         balance_statement = "Game Cost: ${}\nPayback: ${} \nCurrent Balance: ${}".format(5 * stakes_multiplier,
@@ -356,7 +361,7 @@ class GameStats:
                                          text="Here are your Game Stats."
                                               "Please use the Export Button to"
                                               "access the results of each round"
-                                              "that you played.", font="arial 10 italic",
+                                              "that you played.", wrap=250, font="arial 10 italic",
                                          justify=LEFT, fg="green", padx=10, pady=10)
         self.export_instructions.grid(row=1)
 
@@ -415,12 +420,12 @@ class GameStats:
         # Dismiss button (row 3)
         self.dismiss_btn = Button(self.details_frame, text="Dismiss", width=10, bg="orange",
                                   font="arial 10 bold", command=partial(self.close_stats, partner))
-        self.dismiss_btn.grid(row=2, pady=10)
+        self.dismiss_btn.grid(row=5, pady=10)
 
     def close_stats(self, partner):
         # Put help button back to normal...
-        partner.help_button.config(state=NORMAL)
-        self.stats_frame.destroy()
+        partner.stats_button.config(state=NORMAL)
+        self.stats_box.destroy()
 
 
 # Help GUI

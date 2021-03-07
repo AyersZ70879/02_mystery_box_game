@@ -119,6 +119,17 @@ class GameStats:
         self.games_played_value_label.grid(row=4, column=1, padx=0)
 
         # Dismiss Button (row 3)
+        self.dismiss_button = Button(self.details_frame, text="Quit", fg="white", bg="#660000", font="Arial 15 bold",
+                                  width=20, command=self.to_quit, padx=10, pady=10)
+        self.dismiss_button.grid(row=6, pady=10)
+
+    def to_quit(self):
+        root.destroy()
 
 
-
+# main routine
+if __name__ == "__main__":
+    root = Tk()
+    root.title("Mystery Box Game")
+    something = Game()
+    root.mainloop()
