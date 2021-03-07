@@ -423,7 +423,7 @@ class GameStats:
         self.dismiss_btn.grid(row=5, pady=10)
 
     def close_stats(self, partner):
-        # Put help button back to normal...
+        # Put stats button back to normal...
         partner.stats_button.config(state=NORMAL)
         self.stats_box.destroy()
 

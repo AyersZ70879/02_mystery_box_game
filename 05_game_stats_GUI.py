@@ -23,7 +23,7 @@ class Game:
         # History Button (row 1)
         self.stats_button = Button(self.game_frame, text="Game Stats",
                                    font="Arial 14", padx=10, pady=10,
-                                   command=lambda: self.to_stats(self))
+                                   command=lambda: self.to_stats(self.round_stats_list, self.game_stats_list))
         self.stats_button.grid(row=1)
 
     def to_stats(self, game_history, game_stats):
@@ -120,12 +120,23 @@ class GameStats:
 
         # Dismiss Button (row 3)
         self.dismiss_button = Button(self.details_frame, text="Quit", fg="white", bg="#660000", font="Arial 15 bold",
-                                  width=20, command=self.to_quit, padx=10, pady=10)
+                                  width=20, command=self.close_stats, padx=10, pady=10)
         self.dismiss_button.grid(row=6, pady=10)
 
-    def to_quit(self):
-        root.destroy()
+    def close_stats(self, partner):
+        # Put stats button back to normal...
+        partner.stats_button.config(state=NORMAL)
+        self.stats_box.destroy()
 
+
+# Export section
+class Export:
+    def __init__(self, partner, game_history, all_game_stats):
+
+        print(game_history)
+
+        # Disable export button
+        partner.export_button.config(state=DISABLED)
 
 # main routine
 if __name__ == "__main__":
