@@ -418,14 +418,14 @@ class GameStats:
         self.games_played_value_label.grid(row=4, column=1, padx=0)
 
         # Export Button
-        self.export_button = Button(self.details_frame, text="Export", font="Arial 15 bold",
-                                    bg="#808080", fg="white", command=self.export)
-        self.export_button.grid(row=6, padx=2)
+        self.export_button = Button(self.details_frame, text="Export", font="Arial 10 bold",
+                                    bg="orange", command=self.export)
+        self.export_button.grid(row=5, column=0, padx=2)
 
         # Dismiss button (row 3)
         self.dismiss_btn = Button(self.details_frame, text="Dismiss", width=10, bg="orange",
                                   font="arial 10 bold", command=partial(self.close_stats, partner))
-        self.dismiss_btn.grid(row=5, pady=10)
+        self.dismiss_btn.grid(row=5, column=1, pady=10)
 
     def export(self):
         get_export = Export(self, self.games_played_label, self.current_balance_label)
@@ -492,7 +492,7 @@ class Export:
 
     def close_export(self, partner):
         # Put stats button back to normal...
-        partner.stats_button.config(state=NORMAL)
+        partner.export_button.config(state=NORMAL)
         self.export_box.destroy()
 
     def save_history(self, partner, game_history, game_stats):
