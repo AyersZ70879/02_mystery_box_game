@@ -317,7 +317,6 @@ class Game:
                                      stats_prizes[2], 5 * stakes_multiplier, round_winnings,
                                      current_balance)
         self.round_stats_list.append(round_summary)
-        print(self.round_stats_list)
 
         # Edit label so user can see their balance
         self.balance_label.configure(text=balance_statement)
@@ -339,7 +338,6 @@ class Game:
 class GameStats:
     def __init__(self, partner, game_history, game_stats):
 
-        print(game_stats)
 
         all_game_stats = [
             "Starting Balance: ${}".format(game_stats[0]),
@@ -456,7 +454,6 @@ class GameStats:
 class Export:
     def __init__(self, partner, game_history, all_game_stats):
 
-        print(game_history)
 
         # Disable export button
         partner.export_button.config(state=DISABLED)
@@ -513,7 +510,6 @@ class Export:
         has_error = "no"
 
         filename = self.filename_entry.get()
-        print(filename)
 
         for letter in filename:
             if re.match(valid_char, letter):
@@ -534,7 +530,6 @@ class Export:
         if has_error == "yes":
             self.filename_entry.config(bg="#ffafaf")
             self.save_error_label.config(text="Invalid Name: {}".format(problem))
-            print()
 
         else:
             # If there are no errors, generate text filename and then close dialogue
@@ -545,7 +540,7 @@ class Export:
             f = open(filename, "w+")
 
             # Heading for stats
-            f.write("Game Statistics\n\n")
+            f.write("**Game Statistics**\n\n")
 
             # Game stats
             for round in game_stats:
